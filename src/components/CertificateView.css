@@ -1,0 +1,358 @@
+.certificate-view-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.certificate-actions {
+  margin-bottom: 2rem;
+}
+
+.certificate-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.certificate-base {
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+/* Painel Esquerdo - Verde Escuro */
+.certificate-left-panel {
+  width: 30%;
+  background: linear-gradient(135deg, #217346 0%, #1a5a36 100%);
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.certificate-left-panel::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 20px,
+    rgba(0, 0, 0, 0.05) 20px,
+    rgba(0, 0, 0, 0.05) 22px
+  );
+  pointer-events: none;
+}
+
+.certificate-date-box {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  z-index: 1;
+}
+
+.date-label {
+  font-size: 0.9rem;
+  color: #217346;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-family: 'Arial', sans-serif;
+}
+
+.date-value {
+  font-size: 1.1rem;
+  color: #217346;
+  font-weight: 600;
+  font-family: 'Arial', sans-serif;
+}
+
+.certificate-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+.logo-square {
+  width: 80px;
+  height: 80px;
+  background: #4ade80;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid white;
+  margin-bottom: 1rem;
+}
+
+.logo-b {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  position: relative;
+}
+
+.logo-b::after {
+  content: '▶';
+  position: absolute;
+  font-size: 1rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.8;
+}
+
+.logo-text {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Painel Direito - Verde Claro */
+.certificate-right-panel {
+  width: 70%;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.certificate-right-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 30px,
+    rgba(34, 197, 94, 0.03) 30px,
+    rgba(34, 197, 94, 0.03) 32px
+  );
+  pointer-events: none;
+}
+
+.certificate-title {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  z-index: 1;
+}
+
+.title-main {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #22c55e;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.1;
+}
+
+.title-sub {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1f2937;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.1;
+}
+
+.certificate-intro {
+  font-size: 1.1rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  font-family: 'Arial', sans-serif;
+  z-index: 1;
+}
+
+.certificate-student-name {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #22c55e;
+  margin-bottom: 1rem;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  text-align: center;
+  border-bottom: 2px solid #217346;
+  padding-bottom: 0.5rem;
+  z-index: 1;
+}
+
+.certificate-description {
+  font-size: 1rem;
+  color: #1f2937;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  text-align: justify;
+  font-family: 'Arial', sans-serif;
+  z-index: 1;
+}
+
+.certificate-description strong {
+  color: #217346;
+  font-weight: 600;
+}
+
+.certificate-duration {
+  font-size: 1rem;
+  color: #1f2937;
+  margin-bottom: 2rem;
+  font-family: 'Arial', sans-serif;
+  z-index: 1;
+}
+
+.certificate-duration strong {
+  color: #217346;
+  font-weight: 600;
+}
+
+.certificate-signature {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: auto;
+  z-index: 1;
+}
+
+.signature-line {
+  width: 200px;
+  height: 2px;
+  background: #217346;
+  margin-bottom: 0.5rem;
+}
+
+.signature-name {
+  font-size: 1.2rem;
+  color: #22c55e;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  margin-bottom: 0.25rem;
+}
+
+.signature-title {
+  font-size: 0.9rem;
+  color: #1f2937;
+  font-family: 'Arial', sans-serif;
+}
+
+.certificate-seal {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1;
+}
+
+.seal-medal {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.seal-medal::before {
+  content: '★';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: #92400e;
+}
+
+.seal-ribbons {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 2px;
+}
+
+.ribbon {
+  width: 20px;
+  height: 40px;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  position: relative;
+}
+
+.ribbon-left {
+  transform: rotate(-15deg);
+  border-left: 2px solid #15803d;
+}
+
+.ribbon-right {
+  transform: rotate(15deg);
+  border-right: 2px solid #15803d;
+}
+
+.ribbon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 3px,
+    rgba(255, 255, 255, 0.1) 3px,
+    rgba(255, 255, 255, 0.1) 4px
+  );
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .certificate-base {
+    flex-direction: column;
+    aspect-ratio: auto;
+  }
+
+  .certificate-left-panel {
+    width: 100%;
+    padding: 2rem;
+  }
+
+  .certificate-right-panel {
+    width: 100%;
+    padding: 2rem;
+  }
+
+  .title-main {
+    font-size: 2.5rem;
+  }
+
+  .title-sub {
+    font-size: 2rem;
+  }
+
+  .certificate-student-name {
+    font-size: 1.8rem;
+  }
+}
+

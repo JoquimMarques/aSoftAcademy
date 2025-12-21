@@ -1,0 +1,75 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Função para verificar se o usuário é admin
+    function isAdmin() {
+      return request.auth != null && 
+             request.auth.token.email in ['nelsonmarquesj55@gmail.com'];
+    }
+    
+    // Cursos - leitura pública, escrita apenas admin
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+      
+      // Inscrições nos cursos
+      match /enrollments/{enrollmentId} {
+        allow read: if true;
+        allow write: if request.auth != null;
+      }
+      
+      // Avaliações dos cursos
+      match /ratings/{ratingId} {
+        allow read: if true;
+        allow write: if request.auth != null;
+      }
+    }
+    
+    // Pedidos de pagamento
+    match /paymentOrders/{orderId} {
+      // Qualquer usuário autenticado pode ler seus próprios pedidos
+      // Admin pode ler todos
+      allow read: if request.auth != null;
+      
+      // Usuário autenticado pode criar pedido
+      allow create: if request.auth != null;
+      
+      // Apenas admin pode atualizar/deletar (aprovar/rejeitar)
+      allow update, delete: if request.auth != null;
+    }
+    
+    // Usuários
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Professores
+    match /professores/{professorId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Certificados
+    match /certificates/{certificateId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Solicitações de Certificados
+    match /certificateRequests/{requestId} {
+      // Admin pode ler todas as solicitações (existentes ou não)
+      allow read: if isAdmin();
+      // Usuários podem ler documentos que não existem (para verificar) ou suas próprias solicitações
+      allow read: if request.auth != null && 
+                     (resource == null || resource.data.userId == request.auth.uid);
+      // Usuários podem criar suas próprias solicitações
+      allow create: if request.auth != null && 
+                       request.resource.data.userId == request.auth.uid;
+      // Apenas admin pode atualizar/deletar (aprovar, rejeitar, marcar como enviado)
+      allow update, delete: if isAdmin();
+    }
+  }
+}
