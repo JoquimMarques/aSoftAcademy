@@ -298,9 +298,101 @@ export const deletePaymentOrder = async (orderId) => {
   }
 }
 
+// ========== FUNÇÕES PARA PAGAMENTO DE CERTIFICADOS ==========
+
+// Preço fixo para certificados (em Kz)
+export const CERTIFICATE_PRICE = 1000
+
+/**
+ * Cria um pedido de pagamento para certificado
+ */
+export const createCertificatePaymentOrder = async (userId, userEmail, userName, courseId, courseTitle) => {
+  try {
+    const orderId = `cert_${userId}_${courseId}_${Date.now()}`
+    const orderRef = doc(db, 'paymentOrders', orderId)
+    
+    await setDoc(orderRef, {
+      orderId,
+      userId,
+      userEmail,
+      userName: userName || 'Usuário',
+      courseId,
+      courseTitle,
+      amount: CERTIFICATE_PRICE,
+      paymentType: 'certificate', // Identifica que é pagamento de certificado
+      status: PAYMENT_STATUS.AWAITING_VERIFICATION,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    })
+    
+    return { orderId, error: null }
+  } catch (error) {
+    console.error('Erro ao criar pedido de pagamento de certificado:', error)
+    return { orderId: null, error: error.message }
+  }
+}
+
+/**
+ * Verifica se o usuário tem um pagamento de certificado aprovado para o curso
+ */
+export const hasApprovedCertificatePayment = async (userId, courseId) => {
+  try {
+    const ordersRef = collection(db, 'paymentOrders')
+    const q = query(
+      ordersRef,
+      where('userId', '==', userId),
+      where('courseId', '==', courseId),
+      where('paymentType', '==', 'certificate'),
+      where('status', '==', PAYMENT_STATUS.APPROVED)
+    )
+    
+    const snapshot = await getDocs(q)
+    return !snapshot.empty
+  } catch (error) {
+    console.error('Erro ao verificar pagamento de certificado aprovado:', error)
+    return false
+  }
+}
+
+/**
+ * Verifica o status do pagamento de certificado do usuário para um curso
+ */
+export const getUserCertificatePaymentStatus = async (userId, courseId) => {
+  try {
+    const ordersRef = collection(db, 'paymentOrders')
+    const q = query(
+      ordersRef,
+      where('userId', '==', userId),
+      where('courseId', '==', courseId),
+      where('paymentType', '==', 'certificate')
+    )
+    
+    const snapshot = await getDocs(q)
+    
+    if (snapshot.empty) {
+      return { status: null, order: null, error: null }
+    }
+    
+    // Retornar o pedido mais recente
+    let latestOrder = null
+    snapshot.forEach((doc) => {
+      const data = doc.data()
+      if (!latestOrder || new Date(data.createdAt) > new Date(latestOrder.createdAt)) {
+        latestOrder = { id: doc.id, ...data }
+      }
+    })
+    
+    return { status: latestOrder?.status, order: latestOrder, error: null }
+  } catch (error) {
+    console.error('Erro ao buscar status do pagamento de certificado:', error)
+    return { status: null, order: null, error: error.message }
+  }
+}
+
 export default {
   PAYMENT_IBAN,
   PAYMENT_STATUS,
+  CERTIFICATE_PRICE,
   getCoursePaymentSettings,
   updateCoursePaymentSettings,
   createPaymentOrder,
@@ -310,6 +402,9 @@ export default {
   getPendingPaymentOrders,
   approvePaymentOrder,
   rejectPaymentOrder,
-  deletePaymentOrder
+  deletePaymentOrder,
+  createCertificatePaymentOrder,
+  hasApprovedCertificatePayment,
+  getUserCertificatePaymentStatus
 }
 

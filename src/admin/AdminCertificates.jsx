@@ -39,7 +39,7 @@ function AdminCertificates() {
 
     try {
       const { requests: fetchedRequests, error: fetchError } = await getAllCertificateRequests()
-      
+
       if (fetchError) {
         setError(fetchError)
       } else {
@@ -58,7 +58,7 @@ function AdminCertificates() {
 
     try {
       const { error: approveError } = await approveCertificateRequest(requestId)
-      
+
       if (approveError) {
         alert(`Erro ao aprovar: ${approveError}`)
       } else {
@@ -81,7 +81,7 @@ function AdminCertificates() {
 
     try {
       const { error: sendError } = await markCertificateAsSent(requestId)
-      
+
       if (sendError) {
         alert(`Erro ao marcar como enviado: ${sendError}`)
       } else {
@@ -107,7 +107,7 @@ function AdminCertificates() {
 
     try {
       const { error: rejectError } = await rejectCertificateRequest(rejectModal.requestId, rejectReason)
-      
+
       if (rejectError) {
         alert(`Erro ao rejeitar: ${rejectError}`)
       } else {
@@ -150,8 +150,8 @@ function AdminCertificates() {
     return badges[status] || badges[CERTIFICATE_REQUEST_STATUS.PENDING]
   }
 
-  const filteredRequests = filter === 'all' 
-    ? requests 
+  const filteredRequests = filter === 'all'
+    ? requests
     : requests.filter(req => req.status === filter)
 
   if (loading || authLoading) {
@@ -171,10 +171,37 @@ function AdminCertificates() {
     <div className="admin-certificates-page">
       <div className="container">
         <div className="admin-header">
-          <h1>🎓 Gerenciar Solicitações de Certificados</h1>
-          <button onClick={() => navigate('/')} className="btn btn-secondary">
+          <button onClick={() => navigate(-1)} className="btn btn-secondary">
             ← Voltar
           </button>
+          <h1>🎓 Gestão de Certificados</h1>
+          <button onClick={loadRequests} className="btn btn-secondary">
+            🔄 Atualizar
+          </button>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="certificates-stats">
+          <div className="stat-card total" onClick={() => setFilter('all')}>
+            <span className="stat-value">{requests.length}</span>
+            <span className="stat-label">Total</span>
+          </div>
+          <div className="stat-card pending" onClick={() => setFilter(CERTIFICATE_REQUEST_STATUS.PENDING)}>
+            <span className="stat-value">{requests.filter(r => r.status === CERTIFICATE_REQUEST_STATUS.PENDING).length}</span>
+            <span className="stat-label">Pendentes</span>
+          </div>
+          <div className="stat-card approved" onClick={() => setFilter(CERTIFICATE_REQUEST_STATUS.APPROVED)}>
+            <span className="stat-value">{requests.filter(r => r.status === CERTIFICATE_REQUEST_STATUS.APPROVED).length}</span>
+            <span className="stat-label">Aprovados</span>
+          </div>
+          <div className="stat-card sent" onClick={() => setFilter(CERTIFICATE_REQUEST_STATUS.SENT)}>
+            <span className="stat-value">{requests.filter(r => r.status === CERTIFICATE_REQUEST_STATUS.SENT).length}</span>
+            <span className="stat-label">Enviados</span>
+          </div>
+          <div className="stat-card rejected" onClick={() => setFilter(CERTIFICATE_REQUEST_STATUS.REJECTED)}>
+            <span className="stat-value">{requests.filter(r => r.status === CERTIFICATE_REQUEST_STATUS.REJECTED).length}</span>
+            <span className="stat-label">Rejeitados</span>
+          </div>
         </div>
 
         {error && (
@@ -184,31 +211,31 @@ function AdminCertificates() {
         )}
 
         <div className="filters">
-          <button 
+          <button
             className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
             onClick={() => setFilter('all')}
           >
             Todas ({requests.length})
           </button>
-          <button 
+          <button
             className={`filter-btn ${filter === CERTIFICATE_REQUEST_STATUS.PENDING ? 'active' : ''}`}
             onClick={() => setFilter(CERTIFICATE_REQUEST_STATUS.PENDING)}
           >
             Pendentes ({requests.filter(r => r.status === CERTIFICATE_REQUEST_STATUS.PENDING).length})
           </button>
-          <button 
+          <button
             className={`filter-btn ${filter === CERTIFICATE_REQUEST_STATUS.APPROVED ? 'active' : ''}`}
             onClick={() => setFilter(CERTIFICATE_REQUEST_STATUS.APPROVED)}
           >
             Aprovados ({requests.filter(r => r.status === CERTIFICATE_REQUEST_STATUS.APPROVED).length})
           </button>
-          <button 
+          <button
             className={`filter-btn ${filter === CERTIFICATE_REQUEST_STATUS.SENT ? 'active' : ''}`}
             onClick={() => setFilter(CERTIFICATE_REQUEST_STATUS.SENT)}
           >
             Enviados ({requests.filter(r => r.status === CERTIFICATE_REQUEST_STATUS.SENT).length})
           </button>
-          <button 
+          <button
             className={`filter-btn ${filter === CERTIFICATE_REQUEST_STATUS.REJECTED ? 'active' : ''}`}
             onClick={() => setFilter(CERTIFICATE_REQUEST_STATUS.REJECTED)}
           >
@@ -245,7 +272,7 @@ function AdminCertificates() {
                       <td>{request.courseDuration}</td>
                       <td>{formatDate(request.requestedAt)}</td>
                       <td>
-                        <span 
+                        <span
                           className="status-badge"
                           style={{
                             color: statusBadge.color,

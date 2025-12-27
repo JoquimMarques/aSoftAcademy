@@ -1,21 +1,146 @@
 <!doctype html>
-<html lang="pt">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="BrioCursos - Plataforma de cursos online em Programação, Economia, Cibersegurança, Designer Gráfico e Matemática" />
-    <meta name="keywords" content="cursos online, programação, educação, aprendizado, BrioCursos" />
-    <meta name="author" content="BrioCursos" />
-    <title>BrioCursos - Cursos Online</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+<html lang="pt-AO">
 
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Viewport e Mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d2818" />
+
+  <!-- SEO Principal - Otimizado para Angola -->
+  <title>BrioCursos - Cursos Online em Angola | Programação, Excel, Design</title>
+  <meta name="description"
+    content="BrioCursos é a plataforma de cursos online em Angola. Aprenda Programação, Python, JavaScript, Excel, Design Gráfico, Matemática e Cibersegurança. Certificado incluso. Comece sua jornada hoje!" />
+  <meta name="keywords"
+    content="cursos online angola, cursos angola, aprender programação angola, cursos de informática luanda, excel angola, python angola, javascript angola, design gráfico angola, cursos online, plataforma de cursos angola, educação online angola, formação profissional angola, cursos de TI angola, BrioCursos, aprender a programar, cursos com certificado angola" />
+  <meta name="author" content="BrioCursos" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow" />
+
+  <!-- Localização Geográfica -->
+  <meta name="geo.region" content="AO" />
+  <meta name="geo.country" content="Angola" />
+  <meta name="language" content="Portuguese" />
+  <meta name="content-language" content="pt-AO" />
+
+  <!-- Canonical URL - IMPORTANTE: Atualize com seu domínio real -->
+  <link rel="canonical" href="https://briocursos.vercel.app/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://briocursos.vercel.app/" />
+  <meta property="og:title" content="BrioCursos - Cursos Online em Angola" />
+  <meta property="og:description"
+    content="Plataforma de cursos online em Angola. Aprenda Programação, Excel, Design e muito mais. Comece sua jornada hoje!" />
+  <meta property="og:image" content="https://briocursos.vercel.app/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="pt_AO" />
+  <meta property="og:site_name" content="BrioCursos" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://briocursos.vercel.app/" />
+  <meta name="twitter:title" content="BrioCursos - Cursos Online em Angola" />
+  <meta name="twitter:description"
+    content="Plataforma de cursos online em Angola. Aprenda Programação, Excel, Design e muito mais!" />
+  <meta name="twitter:image" content="https://briocursos.vercel.app/img/og-image.png" />
+
+  <!-- Dados Estruturados (Schema.org) - Para aparecer melhor no Google -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "BrioCursos",
+      "alternateName": "Brio Cursos Angola",
+      "url": "https://briocursos.vercel.app",
+      "logo": "https://briocursos.vercel.app/assets/logo.png",
+      "description": "Plataforma de cursos online em Angola. Oferecemos cursos de Programação, Excel, Design Gráfico, Matemática e Cibersegurança.",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Angola"
+      },
+      "sameAs": [],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "availableLanguage": "Portuguese"
+      }
+    }
+    </script>
+
+  <!-- Dados Estruturados - Lista de Cursos -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Cursos Online",
+      "description": "Lista de cursos online disponíveis na BrioCursos Angola",
+      "itemListElement": [
+        {
+          "@type": "Course",
+          "position": 1,
+          "name": "Lógica de Programação com Portugol Studio",
+          "description": "Aprenda lógica de programação do zero com Portugol Studio",
+          "provider": {
+            "@type": "Organization",
+            "name": "BrioCursos"
+          },
+          "inLanguage": "pt"
+        },
+        {
+          "@type": "Course",
+          "position": 2,
+          "name": "Programação com Python",
+          "description": "Aprenda Python do básico ao avançado",
+          "provider": {
+            "@type": "Organization",
+            "name": "BrioCursos"
+          },
+          "inLanguage": "pt"
+        },
+        {
+          "@type": "Course",
+          "position": 3,
+          "name": "Excel Básico ao Avançado",
+          "description": "Domine o Microsoft Excel para o mercado de trabalho",
+          "provider": {
+            "@type": "Organization",
+            "name": "BrioCursos"
+          },
+          "inLanguage": "pt"
+        },
+        {
+          "@type": "Course",
+          "position": 4,
+          "name": "Design Gráfico com Photoshop e Canva",
+          "description": "Aprenda design gráfico profissional",
+          "provider": {
+            "@type": "Organization",
+            "name": "BrioCursos"
+          },
+          "inLanguage": "pt"
+        }
+      ]
+    }
+    </script>
+
+  <!-- Preconnect para performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

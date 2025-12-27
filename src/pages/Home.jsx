@@ -1,47 +1,101 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import CourseCard from '../components/CourseCard'
-import { getAllJourneys } from '../services/coursesApi'
-import { getTotalPlatformStudents } from '../services/coursesData'
+import { getAllJourneys, getAllCourses } from '../services/coursesApi'
+import { FaSearch, FaTimes } from 'react-icons/fa'
 import './Home.css'
+
+// Palavras-chave populares para ajudar na pesquisa
+const popularKeywords = [
+  { label: 'Programação', icon: '💻' },
+  { label: 'Python', icon: '🐍' },
+  { label: 'JavaScript', icon: '⚡' },
+  { label: 'HTML', icon: '🌐' },
+  { label: 'CSS', icon: '🎨' },
+  { label: 'Excel', icon: '📊' },
+  { label: 'Matemática', icon: '🔢' },
+  { label: 'Design', icon: '✨' },
+  { label: 'Cibersegurança', icon: '🛡️' },
+  { label: 'Photoshop', icon: '🖼️' },
+]
 
 function Home() {
   const [journeys, setJourneys] = useState([])
+  const [allCourses, setAllCourses] = useState([])
   const [loading, setLoading] = useState(true)
-  const [totalStudents, setTotalStudents] = useState(null)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+  const [isSearching, setIsSearching] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
   })
 
   useEffect(() => {
-    const fetchJourneys = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true)
-        const data = await getAllJourneys()
-        setJourneys(data)
+        const [journeysData, coursesData] = await Promise.all([
+          getAllJourneys(),
+          getAllCourses()
+        ])
+        setJourneys(journeysData)
+        setAllCourses(coursesData)
       } catch (err) {
-        console.error('Erro ao carregar jornadas:', err)
+        console.error('Erro ao carregar dados:', err)
       } finally {
         setLoading(false)
       }
     }
 
-    const fetchTotalStudents = async () => {
-      try {
-        const total = await getTotalPlatformStudents()
-        setTotalStudents(total)
-      } catch (err) {
-        console.error('Erro ao carregar total de alunos:', err)
-      }
+    fetchData()
+  }, [])
+
+  // Função para pesquisar cursos
+  const searchCourses = (term) => {
+    if (!term.trim()) {
+      setSearchResults([])
+      setIsSearching(false)
+      return
     }
 
-    fetchJourneys()
-    fetchTotalStudents()
-  }, [])
+    setIsSearching(true)
+    const lowerTerm = term.toLowerCase()
+
+    // Pesquisar em todos os cursos (de todas as jornadas)
+    const results = allCourses.filter(course =>
+      course.title?.toLowerCase().includes(lowerTerm) ||
+      course.description?.toLowerCase().includes(lowerTerm) ||
+      course.category?.toLowerCase().includes(lowerTerm) ||
+      course.subtitle?.toLowerCase().includes(lowerTerm)
+    )
+
+    setSearchResults(results)
+  }
+
+  // Atualizar pesquisa quando o termo mudar
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      searchCourses(searchTerm)
+    }, 300)
+
+    return () => clearTimeout(debounce)
+  }, [searchTerm, allCourses])
+
+  // Limpar pesquisa
+  const clearSearch = () => {
+    setSearchTerm('')
+    setSearchResults([])
+    setIsSearching(false)
+  }
+
+  // Aplicar palavra-chave
+  const applyKeyword = (keyword) => {
+    setSearchTerm(keyword)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Aqui você pode adicionar a lógica de cadastro
     console.log('Cadastro:', formData)
     alert('Cadastro realizado com sucesso!')
     setFormData({ name: '', email: '' })
@@ -66,16 +120,12 @@ function Home() {
             <p className="hero-description">
               Cursos gratuitos e completos em diversas áreas: Programação, Cibersegurança, Designer Gráfico, Matemática...
             </p>
-            {totalStudents !== null && totalStudents > 0 && (
-              <p className="hero-stats">
-                {totalStudents >= 1000
-                  ? `Mas de ${(totalStudents / 1000).toFixed(1).replace('.0', '')} mil pessoas já iniciaram a sua jornada!`
-                  : `Vamos lá! ${totalStudents} pessoas já iniciaram a sua jornada!`}
-              </p>
-            )}
+            <p className="hero-stats">
+              🎯 Meta: 100 pessoas • ✅ 112+ já iniciaram!
+            </p>
 
-            <div 
-              className="scroll-indicator" 
+            <div
+              className="scroll-indicator"
               aria-hidden="true"
               onClick={() => document.querySelector('.featured-section')?.scrollIntoView({ behavior: 'smooth' })}
               title="Ver cursos"
@@ -84,9 +134,9 @@ function Home() {
             </div>
           </div>
           <div className="hero-image">
-            <img 
-              src="/img/placeholder-hero.png" 
-              alt="Programação" 
+            <img
+              src="/img/placeholder-hero.png"
+              alt="Programação"
               onError={(e) => {
                 e.target.style.display = 'none'
                 e.target.parentElement.innerHTML = '<div class="hero-image-placeholder">💻</div>'
@@ -128,8 +178,56 @@ function Home() {
 
       <section className="featured-section">
         <div className="container">
-          <h2 className="section-title">Nossas Jornadas</h2>
-          
+          <h2 className="section-title">
+            {isSearching ? 'Resultados da Pesquisa' : 'Nossas Jornadas'}
+          </h2>
+
+          {/* Campo de Pesquisa */}
+          <div className="search-container">
+            <div className="search-input-wrapper">
+              <FaSearch className="search-icon" />
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Pesquisar cursos... (ex: Python, Excel, Design)"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {searchTerm && (
+                <button
+                  className="search-clear-btn"
+                  onClick={clearSearch}
+                  aria-label="Limpar pesquisa"
+                >
+                  <FaTimes />
+                </button>
+              )}
+            </div>
+
+            {/* Palavras-chave sugeridas */}
+            <div className="search-keywords">
+              <span className="keywords-label">Pesquisas populares:</span>
+              <div className="keywords-list">
+                {popularKeywords.map((keyword) => (
+                  <button
+                    key={keyword.label}
+                    className={`keyword-tag ${searchTerm.toLowerCase() === keyword.label.toLowerCase() ? 'active' : ''}`}
+                    onClick={() => applyKeyword(keyword.label)}
+                  >
+                    <span className="keyword-icon">{keyword.icon}</span>
+                    {keyword.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {isSearching && (
+              <p className="search-results-count">
+                {searchResults.length} curso(s) encontrado(s) para "{searchTerm}"
+              </p>
+            )}
+          </div>
+
           {loading && (
             <div className="loading-container">
               <div className="spinner"></div>
@@ -137,7 +235,36 @@ function Home() {
             </div>
           )}
 
-          {!loading && journeys.length > 0 && (
+          {/* Mostrar resultados da pesquisa */}
+          {!loading && isSearching && (
+            <>
+              {searchResults.length > 0 ? (
+                <div className="courses-grid">
+                  {searchResults.map((course) => (
+                    <CourseCard key={course.id} course={{
+                      ...course,
+                      title: course.title,
+                      subtitle: course.description,
+                      thumbnail: course.thumbnail,
+                      category: course.category,
+                      type: 'course'
+                    }} />
+                  ))}
+                </div>
+              ) : (
+                <div className="no-results">
+                  <p>🔍 Nenhum curso encontrado para "{searchTerm}"</p>
+                  <p className="no-results-hint">Tente pesquisar por: Programação, Python, Excel, Design...</p>
+                  <button className="btn-clear-search" onClick={clearSearch}>
+                    Ver todas as jornadas
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Mostrar jornadas quando não está pesquisando */}
+          {!loading && !isSearching && journeys.length > 0 && (
             <>
               <div className="courses-grid">
                 {journeys.map((journey) => (
@@ -153,7 +280,7 @@ function Home() {
             </>
           )}
 
-          {!loading && journeys.length === 0 && (
+          {!loading && !isSearching && journeys.length === 0 && (
             <div className="no-courses">
               <p>Nenhuma jornada disponível no momento.</p>
             </div>

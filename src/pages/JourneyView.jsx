@@ -16,12 +16,12 @@ function JourneyView() {
       try {
         setLoading(true)
         const data = await getJourneyById(id)
-        
+
         if (!data) {
           setError('Jornada não encontrada')
           return
         }
-        
+
         setJourney(data)
       } catch (err) {
         console.error('Erro ao carregar jornada:', err)
@@ -81,8 +81,8 @@ function JourneyView() {
       <div className="container">
         <div className="journey-header">
           {journey.icon && journey.icon.startsWith('/') ? (
-            <img 
-              src={journey.icon} 
+            <img
+              src={journey.icon}
               alt={journey.title}
               className="journey-icon"
               style={{
@@ -94,9 +94,9 @@ function JourneyView() {
               }}
             />
           ) : (
-            <div 
+            <div
               className="journey-icon"
-              style={{ 
+              style={{
                 backgroundColor: journey.color || '#667eea',
                 fontSize: '8rem',
                 display: 'flex',
@@ -115,15 +115,12 @@ function JourneyView() {
           <p className="journey-description">{journey.description}</p>
           <div className="journey-stats">
             <span>📚 {journey.coursesCount || 0} cursos</span>
-            {journey.students !== undefined && (
-              <span>👥 {journey.students.toLocaleString()} alunos</span>
-            )}
           </div>
         </div>
 
         <div className="journey-courses-section">
           <h2 className="section-title">Cursos da Jornada</h2>
-          
+
           {journey.courses && journey.courses.length > 0 ? (
             <div className="courses-grid">
               {journey.courses.map((course) => (

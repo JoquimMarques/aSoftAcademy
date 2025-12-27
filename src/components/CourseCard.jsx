@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import { useAuth } from '../contexts/AuthContext'
 import { isEnrolledInCourse, getUserProgress } from '../services/coursesService'
 import { getCoursePaymentSettings } from '../services/paymentService'
@@ -30,7 +31,7 @@ function CourseCard({ course }) {
         if (user) {
           const enrolled = await isEnrolledInCourse(user.uid, course.id)
           setIsEnrolled(enrolled)
-          
+
           if (enrolled) {
             const userProgress = await getUserProgress(user.uid, course.id)
             setProgress(userProgress.progress || 0)
@@ -51,9 +52,9 @@ function CourseCard({ course }) {
   return (
     <div className="course-card">
       <div className="course-image-container">
-        <div 
+        <div
           className="course-thumbnail"
-          style={{ 
+          style={{
             backgroundColor: course.color || '#667eea',
             fontSize: '5rem',
             display: 'flex',
@@ -79,11 +80,6 @@ function CourseCard({ course }) {
         </p>
         <div className="course-footer">
           <div className="course-footer-top">
-            {course.students !== undefined && (
-              <span className="course-students">
-                👥 {course.students.toLocaleString()} alunos
-              </span>
-            )}
             {course.rating !== undefined && course.rating > 0 && (
               <span className="course-rating">
                 ⭐ {course.rating.toFixed(1)} {course.ratingCount > 0 && `(${course.ratingCount})`}
@@ -92,8 +88,8 @@ function CourseCard({ course }) {
           </div>
           {!loading && !isEnrolled && course.type !== 'journey' && (
             <span className={`course-price ${paymentEnabled && coursePrice > 0 ? 'paid' : 'free'}`}>
-              {paymentEnabled && coursePrice > 0 
-                ? `${coursePrice.toLocaleString('pt-AO')} Kz` 
+              {paymentEnabled && coursePrice > 0
+                ? `${coursePrice.toLocaleString('pt-AO')} Kz`
                 : 'Grátis'}
             </span>
           )}
@@ -137,6 +133,22 @@ function CourseCard({ course }) {
       </div>
     </div>
   )
+}
+
+CourseCard.propTypes = {
+  course: PropTypes.shape({
+    id: PropTypes.string,
+    type: PropTypes.string,
+    title: PropTypes.string,
+    subtitle: PropTypes.string,
+    description: PropTypes.string,
+    color: PropTypes.string,
+    thumbnail: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    category: PropTypes.string,
+    students: PropTypes.number,
+    rating: PropTypes.number,
+    ratingCount: PropTypes.number
+  })
 }
 
 export default CourseCard

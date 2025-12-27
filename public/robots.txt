@@ -1,0 +1,19 @@
+# BrioCursos - Robots.txt
+# Permite que motores de busca indexem todo o site
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://briocursos.vercel.app/sitemap.xml
+
+# Regras específicas para Googlebot
+User-agent: Googlebot
+Allow: /
+
+# Regras para outros bots
+User-agent: Bingbot
+Allow: /
+
+User-agent: Yandex
+Allow: /

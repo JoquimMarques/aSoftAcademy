@@ -1,19 +1,38 @@
 .course-card {
   background: linear-gradient(135deg, #0d2818 0%, #1a4d2e 100%);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
-  transition: all 0.3s;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  border: 1px solid rgba(74, 222, 128, 0.15);
+  position: relative;
+}
+
+.course-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.1) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.course-card:hover::before {
+  opacity: 1;
 }
 
 .course-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(74, 222, 128, 0.4);
-  border-color: rgba(74, 222, 128, 0.4);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(74, 222, 128, 0.25);
+  border-color: rgba(74, 222, 128, 0.5);
 }
 
 .course-image-container {
@@ -202,8 +221,15 @@
 }
 
 @keyframes priceGlow {
-  0%, 100% { box-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
-  50% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+  }
 }
 
 .course-link {
@@ -221,8 +247,8 @@
 
 .course-link:hover {
   background: linear-gradient(45deg, #22c55e, #4ade80);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(74, 222, 128, 0.5);
 }
 
 .course-progress-container {

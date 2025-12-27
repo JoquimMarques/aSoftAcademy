@@ -332,7 +332,7 @@ export const courses = [
     duration: '25 horas',
     thumbnail: '📊',
     color: '#217346',
-    instructor: 'Equipe de Professores',
+    instructor: 'Edson Cavalcante',
     rating: 4.9,
     price: 0,
     lessons: 20,
