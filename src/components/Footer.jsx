@@ -23,7 +23,7 @@ function Footer() {
                 <Link to="/" className="footer-link">Início</Link>
               </li>
               <li>
-                <Link to="/professores" className="footer-link">Professores</Link>
+                <Link to="/professores" className="footer-link">Formadores</Link>
               </li>
               <li>
                 <Link to="/certificados" className="footer-link">Certificados</Link>
@@ -37,15 +37,9 @@ function Footer() {
           <div className="footer-section">
             <h4 className="footer-title">Redes Sociais</h4>
             <div className="footer-social">
-              <a
-                href="https://briolinke.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-social-link"
-              >
+            
                 <FaLink className="footer-social-icon" />
-                <span>brioLink</span>
-              </a>
+               
             </div>
           </div>
         </div>

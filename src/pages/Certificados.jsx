@@ -64,7 +64,7 @@ function Certificados() {
             boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)'
           }}>
             <img 
-              src="/img/Certificado2.png" 
+            
               alt="Exemplo de Certificado" 
               style={{
                 width: '100%',
