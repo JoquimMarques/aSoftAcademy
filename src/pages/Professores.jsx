@@ -13,7 +13,7 @@ function Professores() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [submitting, setSubmitting] = useState(false)
-  
+
   const [newProfessor, setNewProfessor] = useState({
     nome: '',
     profissao: '',
@@ -91,7 +91,7 @@ function Professores() {
         portfolio: ''
       })
       setShowAddForm(false)
-      
+
       // Recarregar lista de professores
       await loadProfessores()
     } catch (err) {
@@ -167,7 +167,7 @@ function Professores() {
         portfolio: ''
       })
       setShowAddForm(false)
-      
+
       await loadProfessores()
     } catch (err) {
       console.error('Erro ao atualizar professor:', err)
@@ -231,11 +231,11 @@ function Professores() {
           <div>
             <h1 className="page-title">👨‍🏫 Nossos Professores</h1>
             <p className="page-subtitle">
-              Conheça os profissionais que compartilham conhecimento na BrioCursos
+              Conheça os profissionais que compartilham conhecimento na aSoftAcademy
             </p>
           </div>
           {isAdmin && (
-            <button 
+            <button
               onClick={() => setShowAddForm(!showAddForm)}
               className="btn-add-professor"
             >
@@ -319,23 +319,23 @@ function Professores() {
               </div>
 
               <div className="form-actions">
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="btn btn-primary"
                   disabled={submitting}
                 >
                   {submitting ? 'Salvando...' : (editingProfessor ? 'Salvar Alterações' : 'Adicionar Professor')}
                 </button>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={handleCancelEdit}
                   className="btn btn-secondary"
                 >
                   Cancelar
                 </button>
                 {editingProfessor && (
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     onClick={() => handleDeleteProfessor(editingProfessor.id)}
                     className="btn btn-danger"
                     style={{ marginLeft: 'auto' }}
@@ -353,7 +353,7 @@ function Professores() {
             <div key={professor.id} className="professor-card">
               {isAdmin && (
                 <div className="professor-admin-actions">
-                  <button 
+                  <button
                     onClick={() => handleEditProfessor(professor)}
                     className="btn-edit-professor"
                     title="Editar professor"
@@ -383,9 +383,9 @@ function Professores() {
                 <p className="professor-bio">{professor.bio}</p>
                 <div className="professor-redes-sociais">
                   {professor.redesSociais.briolink ? (
-                    <a 
-                      href={professor.redesSociais.briolink} 
-                      target="_blank" 
+                    <a
+                      href={professor.redesSociais.briolink}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="rede-social-button briolink-button"
                       title="briolink"
@@ -393,7 +393,7 @@ function Professores() {
                       🔗 briolink
                     </a>
                   ) : (
-                    <button 
+                    <button
                       className="rede-social-button briolink-button disabled"
                       title="BrioLink (em breve)"
                       disabled
@@ -402,9 +402,9 @@ function Professores() {
                     </button>
                   )}
                   {professor.redesSociais.portfolio ? (
-                    <a 
-                      href={professor.redesSociais.portfolio} 
-                      target="_blank" 
+                    <a
+                      href={professor.redesSociais.portfolio}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="rede-social-button portfolio-button"
                       title="Portfólio"
@@ -412,7 +412,7 @@ function Professores() {
                       💼 Portfólio
                     </a>
                   ) : (
-                    <button 
+                    <button
                       className="rede-social-button portfolio-button disabled"
                       title="Portfólio (em breve)"
                       disabled

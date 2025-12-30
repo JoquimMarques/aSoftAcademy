@@ -24,7 +24,7 @@ function CertificateView({ certificate, courseData }) {
   // Gerar descrição do curso com tópicos principais
   const generateCourseDescription = () => {
     if (!courseData) return ''
-    
+
     const modules = courseData.content?.modules || []
     if (modules.length === 0) {
       return 'adquirindo conhecimentos e competências essenciais.'
@@ -43,7 +43,7 @@ function CertificateView({ certificate, courseData }) {
       // Usar função para obter nome do módulo e evitar análise estática pelo Vite
       const html2canvasModule = await import(/* @vite-ignore */ getModuleName('html2canvas'))
       const jsPDFModule = await import(/* @vite-ignore */ getModuleName('jspdf'))
-      
+
       const html2canvas = html2canvasModule.default
       const jsPDF = jsPDFModule.default
 
@@ -56,26 +56,26 @@ function CertificateView({ certificate, courseData }) {
       })
 
       const imgData = canvas.toDataURL('image/png')
-      
+
       // Criar PDF
       const pdf = new jsPDF('landscape', 'mm', 'a4')
       const pdfWidth = pdf.internal.pageSize.getWidth()
       const pdfHeight = pdf.internal.pageSize.getHeight()
-      
+
       // Calcular dimensões mantendo proporção
       const imgWidth = canvas.width
       const imgHeight = canvas.height
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight) * 0.264583 // Converter px para mm
-      
+
       const imgScaledWidth = imgWidth * ratio
       const imgScaledHeight = imgHeight * ratio
-      
+
       // Centralizar imagem no PDF
       const xOffset = (pdfWidth - imgScaledWidth) / 2
       const yOffset = (pdfHeight - imgScaledHeight) / 2
-      
+
       pdf.addImage(imgData, 'PNG', xOffset, yOffset, imgScaledWidth, imgScaledHeight)
-      
+
       // Nome do arquivo
       const fileName = `Certificado_${certificate.courseTitle.replace(/\s+/g, '_')}_${certificate.studentName.replace(/\s+/g, '_')}.pdf`
       pdf.save(fileName)
@@ -96,15 +96,15 @@ function CertificateView({ certificate, courseData }) {
   return (
     <div className="certificate-view-container">
       <div className="certificate-actions">
-        <button 
-          onClick={handleDownloadPDF} 
+        <button
+          onClick={handleDownloadPDF}
           className="btn btn-primary"
           title="Baixar certificado em PDF"
         >
           📥 Baixar PDF
         </button>
       </div>
-      
+
       <div ref={certificateRef} className="certificate-wrapper">
         <div className="certificate-base">
           {/* Painel Esquerdo (Verde Escuro) */}
@@ -117,7 +117,7 @@ function CertificateView({ certificate, courseData }) {
               <div className="logo-square">
                 <span className="logo-b">b</span>
               </div>
-              <div className="logo-text">BrioCursos</div>
+              <div className="logo-text">aSoftAcademy</div>
             </div>
           </div>
 
@@ -138,7 +138,7 @@ function CertificateView({ certificate, courseData }) {
 
             <div className="certificate-description">
               Certificamos que <strong>{certificate.studentName}</strong> concluiu com êxito o curso{' '}
-              <strong>{certificate.courseTitle}</strong> na plataforma <strong>BrioCursos</strong>,{' '}
+              <strong>{certificate.courseTitle}</strong> na plataforma <strong>aSoftAcademy</strong>,{' '}
               {generateCourseDescription()}
             </div>
 

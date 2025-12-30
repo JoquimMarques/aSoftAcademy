@@ -10,7 +10,7 @@ function Footer() {
       <div className="footer-container">
         <div className="footer-content">
           <div className="footer-section">
-            <h3 className="footer-logo">BrioCursos</h3>
+            <h3 className="footer-logo">aSoftAcademy</h3>
             <p className="footer-description">
               Plataforma de cursos online gratuitos para todos.
             </p>
@@ -37,9 +37,9 @@ function Footer() {
           <div className="footer-section">
             <h4 className="footer-title">Redes Sociais</h4>
             <div className="footer-social">
-              <a 
-                href="https://briolinke.vercel.app/" 
-                target="_blank" 
+              <a
+                href="https://briolinke.vercel.app/"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="footer-social-link"
               >
@@ -52,7 +52,7 @@ function Footer() {
 
         <div className="footer-bottom">
           <p className="footer-copyright">
-            © {currentYear} BrioCursos. Todos os direitos reservados.
+            © {currentYear} aSoftAcademy. Todos os direitos reservados.
           </p>
         </div>
       </div>

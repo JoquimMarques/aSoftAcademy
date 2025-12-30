@@ -41,7 +41,7 @@ function BrioLink() {
     if (!newPost.trim()) return
 
     setLoading(true)
-    
+
     // Simular criação de post
     setTimeout(() => {
       const post = {
@@ -58,8 +58,8 @@ function BrioLink() {
   }
 
   const handleLike = (postId) => {
-    setPosts(posts.map(post => 
-      post.id === postId 
+    setPosts(posts.map(post =>
+      post.id === postId
         ? { ...post, likes: post.likes + 1 }
         : post
     ))
@@ -71,7 +71,7 @@ function BrioLink() {
         <div className="briolink-header">
           <h1 className="page-title">🔗 BrioLink</h1>
           <p className="page-subtitle">
-            Rede social da BrioCursos - Conecte-se com outros alunos e compartilhe seu aprendizado!
+            Rede social da aSoftAcademy - Conecte-se com outros alunos e compartilhe seu aprendizado!
           </p>
         </div>
 
@@ -88,8 +88,8 @@ function BrioLink() {
                     className="post-input"
                     rows="4"
                   />
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     className="btn btn-primary"
                     disabled={loading || !newPost.trim()}
                   >
@@ -100,7 +100,7 @@ function BrioLink() {
             ) : (
               <div className="login-prompt">
                 <p>Faça login para participar da comunidade BrioLink!</p>
-                <button 
+                <button
                   onClick={() => navigate('/login')}
                   className="btn btn-primary"
                 >
@@ -130,7 +130,7 @@ function BrioLink() {
                         <p>{post.conteudo}</p>
                       </div>
                       <div className="post-actions">
-                        <button 
+                        <button
                           className="like-button"
                           onClick={() => handleLike(post.id)}
                         >
