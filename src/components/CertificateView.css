@@ -35,7 +35,7 @@
 /* Painel Esquerdo - Verde Escuro */
 .certificate-left-panel {
   width: 30%;
-  background: linear-gradient(135deg, #217346 0%, #1a5a36 100%);
+  background: linear-gradient(135deg, #422173 0%, #511a5a 100%);
   padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
@@ -71,7 +71,7 @@
 
 .date-label {
   font-size: 0.9rem;
-  color: #217346;
+  color: #fff;
   font-weight: 500;
   margin-bottom: 0.5rem;
   font-family: 'Arial', sans-serif;
@@ -79,7 +79,7 @@
 
 .date-value {
   font-size: 1.1rem;
-  color: #217346;
+  color: #fff;
   font-weight: 600;
   font-family: 'Arial', sans-serif;
 }
@@ -94,7 +94,7 @@
 .logo-square {
   width: 80px;
   height: 80px;
-  background: #4ade80;
+  background: #a855f7;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -296,7 +296,7 @@
 .ribbon {
   width: 20px;
   height: 40px;
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  background: linear-gradient(135deg, #22c55e 0%, #7c3aed 100%);
   position: relative;
 }
 

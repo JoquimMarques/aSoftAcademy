@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { hasAdminAccess } from './adminAccess'
 import { db, storage } from '../services/firebase'
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { getCoursePaymentSettings, updateCoursePaymentSettings, PAYMENT_IBAN } from '../services/paymentService'
 import './ManageCourse.css'
 
 function ManageCourse() {
@@ -28,12 +27,8 @@ function ManageCourse() {
   })
   const [uploadProgress, setUploadProgress] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
-  
-  // Payment settings
-  const [paymentEnabled, setPaymentEnabled] = useState(false)
-  const [coursePrice, setCoursePrice] = useState(0)
-  const [savingPayment, setSavingPayment] = useState(false)
-  
+
+
   // Course status
   const [courseFinished, setCourseFinished] = useState(false)
   const [savingStatus, setSavingStatus] = useState(false)
@@ -50,7 +45,6 @@ function ManageCourse() {
     }
 
     loadCourseData()
-    loadPaymentSettings()
   }, [id, user, navigate])
 
   const loadCourseData = async () => {
@@ -104,44 +98,12 @@ function ManageCourse() {
     }
   }
 
-  const loadPaymentSettings = async () => {
-    try {
-      const { paymentEnabled: enabled, price } = await getCoursePaymentSettings(id)
-      setPaymentEnabled(enabled)
-      setCoursePrice(price)
-    } catch (err) {
-      console.error('Erro ao carregar configurações de pagamento:', err)
-    }
-  }
 
-  const handleSavePaymentSettings = async () => {
-    setSavingPayment(true)
-    setError('')
-    
-    try {
-      const { error } = await updateCoursePaymentSettings(id, {
-        paymentEnabled,
-        price: coursePrice
-      })
-      
-      if (error) {
-        setError(error)
-      } else {
-        setSuccess('Configurações de pagamento salvas!')
-        setTimeout(() => setSuccess(''), 3000)
-      }
-    } catch (err) {
-      console.error('Erro ao salvar configurações de pagamento:', err)
-      setError('Erro ao salvar configurações de pagamento')
-    } finally {
-      setSavingPayment(false)
-    }
-  }
 
   const handleToggleCourseStatus = async () => {
     setSavingStatus(true)
     setError('')
-    
+
     try {
       const newStatus = !courseFinished
       const courseRef = doc(db, 'courses', id)
@@ -150,7 +112,7 @@ function ManageCourse() {
         finishedAt: newStatus ? new Date().toISOString() : null,
         updatedAt: new Date().toISOString()
       })
-      
+
       setCourseFinished(newStatus)
       setSuccess(newStatus ? '✅ Curso marcado como FINALIZADO!' : '🔄 Curso marcado como EM ANDAMENTO!')
       setTimeout(() => setSuccess(''), 3000)
@@ -513,9 +475,6 @@ function ManageCourse() {
               </div>
             </div>
           )}
-          <Link to="/admin/pagamentos" className="admin-payments-link">
-            💳 Ver Todos Pagamentos
-          </Link>
         </div>
 
         {/* Course Status Section */}
@@ -526,7 +485,7 @@ function ManageCourse() {
               {courseFinished ? '✅ CURSO FINALIZADO' : '🔄 CURSO EM ANDAMENTO'}
             </div>
             <p className="status-description">
-              {courseFinished 
+              {courseFinished
                 ? 'Este curso foi marcado como finalizado. Os alunos verão que o curso está completo.'
                 : 'Este curso ainda está em andamento. Novas aulas podem ser adicionadas.'}
             </p>
@@ -535,62 +494,16 @@ function ManageCourse() {
               onClick={handleToggleCourseStatus}
               disabled={savingStatus}
             >
-              {savingStatus 
-                ? 'Salvando...' 
-                : courseFinished 
-                  ? '🔄 Reabrir Curso (Em Andamento)' 
+              {savingStatus
+                ? 'Salvando...'
+                : courseFinished
+                  ? '🔄 Reabrir Curso (Em Andamento)'
                   : '✅ Marcar como Finalizado'}
             </button>
           </div>
         </div>
 
-        {/* Payment Settings Section */}
-        <div className="payment-settings-section">
-          <h3>💳 Configurações de Pagamento</h3>
-          <div className="payment-settings-content">
-            <div className="payment-toggle">
-              <label className="toggle-switch">
-                <input
-                  type="checkbox"
-                  checked={paymentEnabled}
-                  onChange={(e) => setPaymentEnabled(e.target.checked)}
-                />
-                <span className="toggle-slider"></span>
-              </label>
-              <span className="toggle-label">
-                {paymentEnabled ? '✅ Pagamento Ativo' : '❌ Pagamento Desativado'}
-              </span>
-            </div>
-            
-            {paymentEnabled && (
-              <div className="payment-price-input">
-                <label htmlFor="course-price">Preço do Curso (Kz):</label>
-                <input
-                  type="number"
-                  id="course-price"
-                  min="0"
-                  step="100"
-                  value={coursePrice}
-                  onChange={(e) => setCoursePrice(parseFloat(e.target.value) || 0)}
-                  placeholder="Ex: 5000"
-                />
-              </div>
-            )}
-            
-            <div className="payment-iban-info">
-              <span className="iban-label">IBAN para recebimento:</span>
-              <code className="iban-code">{PAYMENT_IBAN}</code>
-            </div>
-            
-            <button
-              className="btn btn-save-payment"
-              onClick={handleSavePaymentSettings}
-              disabled={savingPayment}
-            >
-              {savingPayment ? 'Salvando...' : '💾 Salvar Configurações de Pagamento'}
-            </button>
-          </div>
-        </div>
+
 
         {error && (
           <div className="error-message">
@@ -701,7 +614,7 @@ function ManageCourse() {
                     required
                   />
                   <small className="form-hint">
-                    Cole a URL direta do vídeo (MP4, WebM, OGG ou serviços como Vimeo). 
+                    Cole a URL direta do vídeo (MP4, WebM, OGG ou serviços como Vimeo).
                     <br />
                     <strong>Dica:</strong> Você pode hospedar vídeos gratuitamente em serviços como Vimeo, Google Drive (compartilhado), ou seu próprio servidor.
                   </small>
@@ -717,11 +630,11 @@ function ManageCourse() {
                     required
                   />
                   <small className="form-hint">
-                    <strong>⚠️ Importante:</strong> O vídeo será convertido em um link (URL) e armazenado no Firebase Storage. 
+                    <strong>⚠️ Importante:</strong> O vídeo será convertido em um link (URL) e armazenado no Firebase Storage.
                     Se o Firebase Storage não estiver configurado ou tiver problemas, use a opção <strong>"URL Direta"</strong> acima.
                     <br />
                     <br />
-                    <strong>Alternativa Gratuita:</strong> Se o upload falhar, faça upload do vídeo em <a href="https://vimeo.com" target="_blank" rel="noopener noreferrer">Vimeo</a> (gratuito) 
+                    <strong>Alternativa Gratuita:</strong> Se o upload falhar, faça upload do vídeo em <a href="https://vimeo.com" target="_blank" rel="noopener noreferrer">Vimeo</a> (gratuito)
                     e use a opção "URL Direta" para colar o link.
                     <br />
                     <br />
@@ -736,8 +649,8 @@ function ManageCourse() {
                   {isUploading && (
                     <div className="upload-progress">
                       <div className="progress-bar">
-                        <div 
-                          className="progress-fill" 
+                        <div
+                          className="progress-fill"
                           style={{ width: `${uploadProgress}%` }}
                         ></div>
                       </div>

@@ -1,7 +1,7 @@
 .sobre-page {
   min-height: calc(100vh - 80px);
   padding: 4rem 2rem;
-  background: #0d2818;
+  background: #0d0d1a;
 }
 
 .page-title {
@@ -20,12 +20,12 @@
 }
 
 .sobre-card {
-  background: linear-gradient(135deg, #0d2818 0%, #1a4d2e 100%);
+  background: linear-gradient(135deg, #0d0d1a 0%, #1a1a2e 100%);
   border-radius: 12px;
   padding: 2.5rem;
   color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  border: 1px solid rgba(168, 85, 247, 0.2);
 }
 
 .sobre-card h2 {
@@ -47,11 +47,11 @@
 }
 
 .signup-card {
-  background: linear-gradient(135deg, #0d2818 0%, #1a4d2e 100%);
+  background: linear-gradient(135deg, #0d0d1a 0%, #1a1a2e 100%);
   padding: 3rem;
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  border: 1px solid rgba(168, 85, 247, 0.2);
 }
 
 .signup-card h2 {
@@ -61,7 +61,7 @@
   text-align: center;
 }
 
-.signup-card > p {
+.signup-card>p {
   color: rgba(255, 255, 255, 0.8);
   text-align: center;
   margin: 0 0 2rem 0;
@@ -76,7 +76,7 @@
 
 .signup-form input {
   padding: 1rem;
-  border: 2px solid rgba(74, 222, 128, 0.3);
+  border: 2px solid rgba(168, 85, 247, 0.3);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.05);
   color: #fff;
@@ -86,7 +86,7 @@
 
 .signup-form input:focus {
   outline: none;
-  border-color: #4ade80;
+  border-color: #a855f7;
   background: rgba(255, 255, 255, 0.1);
 }
 
@@ -107,15 +107,15 @@
 }
 
 .btn-primary {
-  background: linear-gradient(45deg, #4ade80, #22c55e);
-  color: #0d2818;
-  box-shadow: 0 4px 15px rgba(74, 222, 128, 0.4);
+  background: linear-gradient(45deg, #a855f7, #9333ea);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(74, 222, 128, 0.6);
-  background: linear-gradient(45deg, #22c55e, #4ade80);
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
+  background: linear-gradient(45deg, #9333ea, #a855f7);
 }
 
 @media (max-width: 768px) {

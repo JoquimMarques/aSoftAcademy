@@ -1,7 +1,7 @@
 .certificados-page {
   min-height: 100vh;
   padding: 2rem 0;
-  background: #0d2818;
+  background: #0d0d1a;
 }
 
 .certificados-page .container {
@@ -133,7 +133,7 @@
   padding: 1.5rem;
   background: #f8f9fa;
   border-radius: 15px;
-  border-left: 4px solid #4ade80;
+  border-left: 4px solid #a855f7;
 }
 
 .info-card h4 {
@@ -159,13 +159,13 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-  color: #0d2818;
+  background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+  color: #0d0d1a;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(74, 222, 128, 0.4);
+  box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
 }
 
 .btn-secondary {

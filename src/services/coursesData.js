@@ -19,7 +19,7 @@ export const courses = [
     level: 'Iniciante',
     duration: '30 horas',
     thumbnail: portugolImage,
-    color: '#4ade80',
+    color: '#944adeff',
     instructor: 'Joaquim César Marques',
     rating: 4.9,
     price: 0,

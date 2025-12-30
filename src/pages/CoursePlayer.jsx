@@ -11,17 +11,7 @@ import {
   getUserProgress,
   markVideoAsCompleted
 } from '../services/coursesService'
-import {
-  getCoursePaymentSettings,
-  getUserPaymentStatus,
-  hasApprovedPayment,
-  PAYMENT_STATUS,
-  hasApprovedCertificatePayment,
-  getUserCertificatePaymentStatus
-} from '../services/paymentService'
 import { requestCertificate, hasCertificateRequest, getCertificateRequestStatus, CERTIFICATE_REQUEST_STATUS } from '../services/certificateRequestService'
-import PaymentModal from '../components/PaymentModal'
-import CertificatePaymentModal from '../components/CertificatePaymentModal'
 import './CoursePlayer.css'
 
 function CoursePlayer() {
@@ -37,23 +27,15 @@ function CoursePlayer() {
   const [hasRated, setHasRated] = useState(false)
   const [averageRating, setAverageRating] = useState(0)
   const [totalRatings, setTotalRatings] = useState(0)
-  const [allRatings, setAllRatings] = useState([]) // Todas as avaliações individuais
+  const [allRatings, setAllRatings] = useState([])
   const [isEnrolled, setIsEnrolled] = useState(false)
   const [completedVideos, setCompletedVideos] = useState([])
   const [progress, setProgress] = useState(0)
   const [enrolling, setEnrolling] = useState(false)
-  const [canMarkComplete, setCanMarkComplete] = useState(false) // Pode marcar como concluído
-  const [paymentRequired, setPaymentRequired] = useState(false) // Pagamento necessário
-  const [coursePrice, setCoursePrice] = useState(0) // Preço do curso
-  const [paymentStatus, setPaymentStatus] = useState(null) // Status do pagamento do usuário
-  const [showPaymentModal, setShowPaymentModal] = useState(false) // Modal de pagamento
-  const [hasPaymentAccess, setHasPaymentAccess] = useState(false) // Tem acesso via pagamento
-  const [courseFinished, setCourseFinished] = useState(false) // Curso finalizado
-  const [certificateRequested, setCertificateRequested] = useState(false) // Certificado foi solicitado
-  const [certificateRequestStatus, setCertificateRequestStatus] = useState(null) // Status da solicitação
-  const [hasCertificatePayment, setHasCertificatePayment] = useState(false) // Tem pagamento de certificado aprovado
-  const [certificatePaymentStatus, setCertificatePaymentStatus] = useState(null) // Status do pagamento de certificado
-  const [showCertificatePaymentModal, setShowCertificatePaymentModal] = useState(false) // Modal de pagamento de certificado
+  const [canMarkComplete, setCanMarkComplete] = useState(false)
+  const [courseFinished, setCourseFinished] = useState(false)
+  const [certificateRequested, setCertificateRequested] = useState(false)
+  const [certificateRequestStatus, setCertificateRequestStatus] = useState(null)
   const videoRef = useRef(null)
   const iframeRef = useRef(null)
   const watchTimerRef = useRef(null)
@@ -104,20 +86,15 @@ function CoursePlayer() {
             }
           } catch (firestoreErr) {
             // Erro ao carregar vídeos do Firestore - não é crítico
-            // Não é um erro crítico, continua com os dados locais
           }
 
           // Buscar avaliações
           await loadRatings()
 
-          // Verificar configurações de pagamento
-          await checkPaymentSettings()
-
           // Verificar se o usuário já avaliou
           if (user) {
             await checkUserRating()
             await checkEnrollment()
-            await checkPaymentAccess()
           }
         } else {
           setError('Curso não encontrado')
@@ -138,21 +115,19 @@ function CoursePlayer() {
     if (!url) return null
     const videoId = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/)
     if (videoId && videoId[1]) {
-      // Parâmetros para remover branding e recomendações do YouTube
       const params = new URLSearchParams({
-        modestbranding: '1',    // Remove logo do YouTube
-        rel: '0',               // Não mostra vídeos relacionados
-        showinfo: '0',          // Remove informações do vídeo
-        iv_load_policy: '3',    // Remove anotações
-        fs: '1',                // Permite fullscreen
-        playsinline: '1',       // Reproduz inline no mobile
-        cc_load_policy: '0',    // Desativa legendas automáticas
-        disablekb: '0',         // Mantém controles de teclado
-        controls: '1',          // Mostra controles
-        autohide: '1',          // Esconde controles automaticamente
+        modestbranding: '1',
+        rel: '0',
+        showinfo: '0',
+        iv_load_policy: '3',
+        fs: '1',
+        playsinline: '1',
+        cc_load_policy: '0',
+        disablekb: '0',
+        controls: '1',
+        autohide: '1',
         origin: window.location.origin
       })
-      // Usar youtube-nocookie.com para mais privacidade e menos recomendações
       return `https://www.youtube-nocookie.com/embed/${videoId[1]}?${params.toString()}`
     }
     return url
@@ -160,29 +135,22 @@ function CoursePlayer() {
 
   const convertVimeoUrlToEmbed = (url) => {
     if (!url) return null
-    // Suporta vários formatos de URL do Vimeo:
-    // https://vimeo.com/123456789
-    // https://vimeo.com/123456789?param=value
-    // https://player.vimeo.com/video/123456789
-    // https://vimeo.com/123456789?fl=ip&fe=ec
     try {
-      // Tentar extrair o ID do vídeo de diferentes formatos
       const patterns = [
-        /(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/,  // Formato padrão
-        /vimeo\.com\/(\d+)/,  // Formato alternativo
+        /(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/,
+        /vimeo\.com\/(\d+)/,
       ]
 
       for (const pattern of patterns) {
         const match = url.match(pattern)
         if (match && match[1]) {
           const videoId = match[1]
-          // Parâmetros para visual limpo no Vimeo
           const params = new URLSearchParams({
-            title: '0',           // Remove título
-            byline: '0',          // Remove nome do autor
-            portrait: '0',        // Remove avatar
-            badge: '0',           // Remove badge
-            autopause: '0',       // Não pausa quando sai de vista
+            title: '0',
+            byline: '0',
+            portrait: '0',
+            badge: '0',
+            autopause: '0',
             player_id: '0',
             app_id: '0'
           })
@@ -190,7 +158,6 @@ function CoursePlayer() {
         }
       }
 
-      // Se nenhum padrão funcionou, tentar extrair manualmente
       const urlObj = new URL(url)
       const pathParts = urlObj.pathname.split('/').filter(p => p)
       if (pathParts.length > 0) {
@@ -217,7 +184,6 @@ function CoursePlayer() {
       return null
     }
 
-    // Verificar se é YouTube
     if (video.videoType === 'youtube' || video.videoId || (video.url && (video.url.includes('youtube.com') || video.url.includes('youtu.be')))) {
       const embedUrl = convertYouTubeUrlToEmbed(video.url)
       if (!embedUrl) {
@@ -226,7 +192,6 @@ function CoursePlayer() {
       return embedUrl
     }
 
-    // Verificar se é Vimeo
     if (video.url && video.url.includes('vimeo.com')) {
       const embedUrl = convertVimeoUrlToEmbed(video.url)
       if (embedUrl) {
@@ -234,7 +199,6 @@ function CoursePlayer() {
       }
     }
 
-    // Para vídeos customizados (MP4, WebM, etc.), retornar a URL diretamente
     return video.url
   }
 
@@ -262,7 +226,6 @@ function CoursePlayer() {
         let count = 0
         const ratingsList = []
 
-        // Buscar dados dos usuários para cada avaliação
         const { getUserData } = await import('../services/authService')
 
         for (const docSnap of ratingsSnapshot.docs) {
@@ -271,7 +234,6 @@ function CoursePlayer() {
           total += ratingValue
           count++
 
-          // Buscar dados do usuário
           let userName = 'Usuário Anônimo'
           if (data.userId) {
             try {
@@ -282,7 +244,6 @@ function CoursePlayer() {
                 userName = userData.email.split('@')[0]
               }
             } catch (err) {
-              // Se não conseguir buscar, usar userId como fallback
               userName = `Usuário ${data.userId.substring(0, 8)}`
             }
           }
@@ -296,7 +257,6 @@ function CoursePlayer() {
           })
         }
 
-        // Ordenar por data (mais recentes primeiro)
         ratingsList.sort((a, b) => {
           if (!a.createdAt) return 1
           if (!b.createdAt) return -1
@@ -312,7 +272,6 @@ function CoursePlayer() {
         setAllRatings([])
       }
     } catch (err) {
-      // Silenciar erros de permissão - as regras do Firestore precisam ser configuradas
       if (err.code !== 'permission-denied') {
         console.error('Erro ao carregar avaliações:', err)
       }
@@ -337,7 +296,6 @@ function CoursePlayer() {
         setHasRated(false)
       }
     } catch (err) {
-      // Silenciar erros de permissão - as regras do Firestore precisam ser configuradas
       if (err.code !== 'permission-denied') {
         console.error('Erro ao verificar avaliação do usuário:', err)
       }
@@ -357,7 +315,6 @@ function CoursePlayer() {
         setCompletedVideos(userProgress.completedVideos || [])
         setProgress(userProgress.progress || 0)
 
-        // Verificar se o certificado foi solicitado quando o curso está 100% concluído
         if (userProgress.progress === 100) {
           const hasRequest = await hasCertificateRequest(user.uid, id)
           setCertificateRequested(hasRequest)
@@ -372,48 +329,6 @@ function CoursePlayer() {
     }
   }
 
-  const checkPaymentSettings = async () => {
-    try {
-      const { paymentEnabled, price } = await getCoursePaymentSettings(id)
-      setPaymentRequired(paymentEnabled)
-      setCoursePrice(price)
-    } catch (err) {
-      console.error('Erro ao verificar configurações de pagamento:', err)
-    }
-  }
-
-  const checkPaymentAccess = async () => {
-    if (!user) return
-
-    try {
-      // Verificar se tem pagamento aprovado
-      const approved = await hasApprovedPayment(user.uid, id)
-      setHasPaymentAccess(approved)
-
-      // Verificar status atual do pagamento
-      const { status } = await getUserPaymentStatus(user.uid, id)
-      setPaymentStatus(status)
-    } catch (err) {
-      console.error('Erro ao verificar acesso de pagamento:', err)
-    }
-  }
-
-  const checkCertificatePayment = useCallback(async () => {
-    if (!user) return
-
-    try {
-      // Verificar se tem pagamento de certificado aprovado
-      const approved = await hasApprovedCertificatePayment(user.uid, id)
-      setHasCertificatePayment(approved)
-
-      // Verificar status atual do pagamento de certificado
-      const { status } = await getUserCertificatePaymentStatus(user.uid, id)
-      setCertificatePaymentStatus(status)
-    } catch (err) {
-      console.error('Erro ao verificar pagamento de certificado:', err)
-    }
-  }, [user, id])
-
   const handleEnroll = async () => {
     if (!user) {
       navigate('/login')
@@ -421,12 +336,6 @@ function CoursePlayer() {
     }
 
     if (isEnrolled) {
-      return
-    }
-
-    // Se pagamento é necessário e não tem acesso aprovado, mostrar modal
-    if (paymentRequired && !hasPaymentAccess) {
-      setShowPaymentModal(true)
       return
     }
 
@@ -439,7 +348,6 @@ function CoursePlayer() {
         setIsEnrolled(true)
         setProgress(0)
         setCompletedVideos([])
-        // Atualizar contador de alunos no curso
         const courseRef = doc(db, 'courses', id)
         const courseSnap = await getDoc(courseRef)
         if (courseSnap.exists()) {
@@ -455,11 +363,6 @@ function CoursePlayer() {
     }
   }
 
-  const handlePaymentSubmitted = async () => {
-    // Recarregar status do pagamento
-    await checkPaymentAccess()
-  }
-
   const handleVideoComplete = async (videoId) => {
     if (!user || !isEnrolled) return
 
@@ -468,7 +371,6 @@ function CoursePlayer() {
       return
     }
 
-    // Verificar se o vídeo já foi marcado como concluído
     if (completedVideos.includes(videoId)) {
       return
     }
@@ -485,7 +387,6 @@ function CoursePlayer() {
         setCompletedVideos([...completedVideos, videoId])
         setProgress(newProgress)
 
-        // Verificar se o certificado foi solicitado quando chegar a 100%
         if (newProgress === 100 && user) {
           const hasRequest = await hasCertificateRequest(user.uid, id)
           setCertificateRequested(hasRequest)
@@ -500,23 +401,17 @@ function CoursePlayer() {
     }
   }
 
-  // Verificar status da solicitação de certificado e pagamento quando o curso for concluído (100%)
+  // Verificar status da solicitação de certificado quando o curso for concluído (100%)
   useEffect(() => {
     const checkCertificateRequest = async () => {
-      // Verificar se o curso foi concluído (progress = 100%)
       if (!user || !isEnrolled || progress !== 100 || videos.length === 0) {
         return
       }
 
-      // Verificar se todos os vídeos foram concluídos
       if (completedVideos.length !== videos.length) {
         return
       }
 
-      // Verificar pagamento de certificado
-      await checkCertificatePayment()
-
-      // Verificar se já existe solicitação
       try {
         const hasRequest = await hasCertificateRequest(user.uid, id)
         setCertificateRequested(hasRequest)
@@ -531,17 +426,11 @@ function CoursePlayer() {
     }
 
     checkCertificateRequest()
-  }, [user, isEnrolled, progress, completedVideos.length, videos.length, id, checkCertificatePayment])
+  }, [user, isEnrolled, progress, completedVideos.length, videos.length, id])
 
-  // Função para solicitar certificado
+  // Função para solicitar certificado (agora gratuito)
   const handleRequestCertificate = async () => {
     if (!user || !isEnrolled || progress !== 100) {
-      return
-    }
-
-    // Verificar se tem pagamento de certificado aprovado
-    if (!hasCertificatePayment) {
-      setShowCertificatePaymentModal(true)
       return
     }
 
@@ -575,27 +464,19 @@ function CoursePlayer() {
     }
   }
 
-  const handleCertificatePaymentSubmitted = async () => {
-    // Recarregar status do pagamento de certificado
-    await checkCertificatePayment()
-  }
-
   // Habilitar botão após tempo fixo (1 minuto)
   useEffect(() => {
-    // Limpar timer anterior se houver
     if (watchTimerRef.current) {
       clearTimeout(watchTimerRef.current)
     }
 
-    // Resetar estado quando mudar de vídeo
     setCanMarkComplete(false)
 
     if (!selectedVideo || !isEnrolled || completedVideos.includes(selectedVideo.id)) {
       return
     }
 
-    // Timer de 1 minuto
-    const WATCH_TIME_REQUIRED = 60000 // 1 minuto (60000 ms)
+    const WATCH_TIME_REQUIRED = 60000 // 1 minuto
 
     watchTimerRef.current = setTimeout(() => {
       setCanMarkComplete(true)
@@ -608,14 +489,13 @@ function CoursePlayer() {
     }
   }, [selectedVideo, isEnrolled, completedVideos])
 
-  // Rastrear progresso do vídeo (apenas para vídeos customizados - opcional)
+  // Rastrear progresso do vídeo (apenas para vídeos customizados)
   useEffect(() => {
     const videoElement = videoRef.current
     if (!videoElement || !selectedVideo || !isEnrolled) {
       return
     }
 
-    // Apenas para vídeos customizados (não YouTube/Vimeo)
     const isCustomVideo = selectedVideo.videoType === 'custom' ||
       selectedVideo.videoType === 'url' ||
       (!selectedVideo.videoType && !selectedVideo.videoId &&
@@ -647,7 +527,7 @@ function CoursePlayer() {
     }
 
     if (hasRated) {
-      return // Usuário já avaliou, não pode alterar
+      return
     }
 
     try {
@@ -662,10 +542,8 @@ function CoursePlayer() {
       setUserRating(rating)
       setHasRated(true)
 
-      // Recarregar avaliações para atualizar a média
       await loadRatings()
     } catch (err) {
-      // Silenciar erros de permissão - as regras do Firestore precisam ser configuradas
       if (err.code !== 'permission-denied') {
         console.error('Erro ao salvar avaliação:', err)
       }
@@ -721,9 +599,6 @@ function CoursePlayer() {
             <Link to={`/curso/${id}/gerenciar`} className="manage-course-button">
               Gerenciar Vídeos
             </Link>
-            <Link to="/admin/pagamentos" className="manage-payments-button">
-              💳 Pagamentos
-            </Link>
           </div>
         )}
       </div>
@@ -731,33 +606,7 @@ function CoursePlayer() {
       <div className="course-content">
         <div className="course-main">
           <div className="course-video-container">
-            {/* BLOQUEIO: Se pagamento é necessário e usuário não pagou, mostrar tela de bloqueio */}
-            {paymentRequired && !hasPaymentAccess && !isEnrolled ? (
-              <div className="course-video video-locked">
-                <div className="video-locked-content">
-                  <div className="lock-icon">🔒</div>
-                  <h3>Conteúdo Bloqueado</h3>
-                  <p>Este curso requer pagamento para acesso.</p>
-                  <div className="locked-price">
-                    {new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA' }).format(coursePrice).replace('AOA', 'Kz')}
-                  </div>
-                  {paymentStatus === PAYMENT_STATUS.AWAITING_VERIFICATION ? (
-                    <div className="payment-awaiting-box">
-                      <span className="awaiting-icon">⏳</span>
-                      <p>Seu pagamento está aguardando verificação.</p>
-                      <small>Você receberá acesso assim que o administrador confirmar.</small>
-                    </div>
-                  ) : (
-                    <button
-                      className="btn btn-unlock"
-                      onClick={() => setShowPaymentModal(true)}
-                    >
-                      💳 Pagar e Desbloquear
-                    </button>
-                  )}
-                </div>
-              </div>
-            ) : selectedVideo ? (
+            {selectedVideo ? (
               <div className="course-video">
                 {(() => {
                   const embedUrl = getVideoEmbedUrl(selectedVideo)
@@ -769,7 +618,6 @@ function CoursePlayer() {
                     selectedVideo.videoType === 'url' ||
                     (!isYouTube && !isVimeo && selectedVideo.url && !selectedVideo.url.includes('youtube.com') && !selectedVideo.url.includes('youtu.be') && !selectedVideo.url.includes('vimeo.com'))
 
-                  // Renderizar iframe para YouTube ou Vimeo
                   if ((isYouTube || isVimeo) && embedUrl) {
                     return (
                       <div className="youtube-video-container">
@@ -785,7 +633,6 @@ function CoursePlayer() {
                       </div>
                     )
                   } else if (isCustomVideo && selectedVideo.url) {
-                    // Renderizar tag <video> para vídeos diretos (MP4, WebM, etc.)
                     return (
                       <video
                         ref={videoRef}
@@ -820,7 +667,6 @@ function CoursePlayer() {
                   <div className="video-title-with-button">
                     <h3>{selectedVideo.title}</h3>
                     {(() => {
-                      // Debug: verificar se o vídeo tem ID
                       if (!selectedVideo.id) {
                         console.warn('⚠️ Vídeo sem ID:', selectedVideo)
                       }
@@ -915,38 +761,13 @@ function CoursePlayer() {
             <div className="course-price-section">
               {!isEnrolled ? (
                 <>
-                  {paymentRequired && coursePrice > 0 ? (
-                    <div className="course-price-large">
-                      {new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA' }).format(coursePrice).replace('AOA', 'Kz')}
-                    </div>
-                  ) : (
-                    <div className="course-price-large">Grátis</div>
-                  )}
-
-                  {/* Mostrar status de pagamento se pendente */}
-                  {paymentRequired && paymentStatus === PAYMENT_STATUS.AWAITING_VERIFICATION && (
-                    <div className="payment-pending-notice">
-                      <span className="pending-icon">⏳</span>
-                      <span>Pagamento aguardando verificação</span>
-                    </div>
-                  )}
-
-                  {paymentRequired && paymentStatus === PAYMENT_STATUS.REJECTED && (
-                    <div className="payment-rejected-notice">
-                      <span className="rejected-icon">❌</span>
-                      <span>Pagamento rejeitado. Tente novamente.</span>
-                    </div>
-                  )}
-
+                  <div className="course-price-large">Grátis</div>
                   <button
                     className="btn btn-primary btn-enroll"
                     onClick={handleEnroll}
-                    disabled={enrolling || (paymentRequired && paymentStatus === PAYMENT_STATUS.AWAITING_VERIFICATION)}
+                    disabled={enrolling}
                   >
-                    {enrolling ? 'Inscrevendo...' :
-                      paymentRequired && !hasPaymentAccess ?
-                        (paymentStatus === PAYMENT_STATUS.AWAITING_VERIFICATION ? '⏳ Aguardando Verificação' : '💳 Comprar Curso') :
-                        'Inscrever-se Grátis'}
+                    {enrolling ? 'Inscrevendo...' : 'Inscrever-se Grátis'}
                   </button>
                 </>
               ) : (
@@ -981,87 +802,37 @@ function CoursePlayer() {
 
                   {/* Botão de Solicitar Certificado quando curso estiver 100% concluído */}
                   {progress === 100 && !certificateRequested && (
-                    <>
-                      {!hasCertificatePayment ? (
-                        <button
-                          onClick={() => setShowCertificatePaymentModal(true)}
-                          className="btn btn-certificate"
-                          style={{
-                            marginTop: '1.5rem',
-                            background: 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)',
-                            color: '#ffffff',
-                            fontWeight: '600',
-                            padding: '0.75rem 1.5rem',
-                            borderRadius: '10px',
-                            border: 'none',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            fontSize: '1rem',
-                            transition: 'all 0.3s ease',
-                            width: '100%',
-                            justifyContent: 'center',
-                            opacity: 0.9
-                          }}
-                          onMouseEnter={(e) => {
-                            e.target.style.transform = 'translateY(-2px)'
-                            e.target.style.opacity = '1'
-                          }}
-                          onMouseLeave={(e) => {
-                            e.target.style.transform = 'translateY(0)'
-                            e.target.style.opacity = '0.9'
-                          }}
-                        >
-                          🔒 Pagar para Solicitar Certificado
-                        </button>
-                      ) : (
-                        <button
-                          onClick={handleRequestCertificate}
-                          className="btn btn-certificate"
-                          style={{
-                            marginTop: '1.5rem',
-                            background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
-                            color: '#1f2937',
-                            fontWeight: '600',
-                            padding: '0.75rem 1.5rem',
-                            borderRadius: '10px',
-                            border: 'none',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            fontSize: '1rem',
-                            transition: 'all 0.3s ease',
-                            width: '100%',
-                            justifyContent: 'center'
-                          }}
-                          onMouseEnter={(e) => {
-                            e.target.style.transform = 'translateY(-2px)'
-                            e.target.style.boxShadow = '0 5px 15px rgba(251, 191, 36, 0.4)'
-                          }}
-                          onMouseLeave={(e) => {
-                            e.target.style.transform = 'translateY(0)'
-                            e.target.style.boxShadow = 'none'
-                          }}
-                        >
-                          🎓 Solicitar Certificado
-                        </button>
-                      )}
-                      {certificatePaymentStatus === PAYMENT_STATUS.AWAITING_VERIFICATION && (
-                        <div style={{
-                          marginTop: '0.5rem',
-                          padding: '0.5rem',
-                          background: 'rgba(251, 191, 36, 0.2)',
-                          borderRadius: '8px',
-                          fontSize: '0.85rem',
-                          color: '#fbbf24',
-                          textAlign: 'center'
-                        }}>
-                          ⏳ Pagamento do certificado aguardando verificação
-                        </div>
-                      )}
-                    </>
+                    <button
+                      onClick={handleRequestCertificate}
+                      className="btn btn-certificate"
+                      style={{
+                        marginTop: '1.5rem',
+                        background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+                        color: '#1f2937',
+                        fontWeight: '600',
+                        padding: '0.75rem 1.5rem',
+                        borderRadius: '10px',
+                        border: 'none',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '1rem',
+                        transition: 'all 0.3s ease',
+                        width: '100%',
+                        justifyContent: 'center'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.transform = 'translateY(-2px)'
+                        e.target.style.boxShadow = '0 5px 15px rgba(251, 191, 36, 0.4)'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.transform = 'translateY(0)'
+                        e.target.style.boxShadow = 'none'
+                      }}
+                    >
+                      🎓 Solicitar Certificado
+                    </button>
                   )}
 
                   {progress === 100 && certificateRequested && (
@@ -1189,21 +960,14 @@ function CoursePlayer() {
               <ul className="modules-list">
                 {videos.map((video, index) => {
                   const isCompleted = completedVideos.includes(video.id)
-                  const isLocked = paymentRequired && !hasPaymentAccess && !isEnrolled
                   return (
                     <li
                       key={video.id}
-                      className={`module-item ${selectedVideo?.id === video.id ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}`}
-                      onClick={() => {
-                        if (isLocked) {
-                          setShowPaymentModal(true)
-                        } else {
-                          setSelectedVideo(video)
-                        }
-                      }}
+                      className={`module-item ${selectedVideo?.id === video.id ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}
+                      onClick={() => setSelectedVideo(video)}
                     >
                       <div className="module-header">
-                        <span className="module-number">{isLocked ? '🔒' : index + 1}</span>
+                        <span className="module-number">{index + 1}</span>
                         <span className="module-title">{video.title}</span>
                         {isCompleted && (
                           <span className="completed-badge" title="Vídeo concluído">✓</span>
@@ -1220,25 +984,8 @@ function CoursePlayer() {
           )}
         </div>
       </div>
-
-      {/* Payment Modal */}
-      <PaymentModal
-        isOpen={showPaymentModal}
-        onClose={() => setShowPaymentModal(false)}
-        course={{ ...course, price: coursePrice }}
-        onPaymentSubmitted={handlePaymentSubmitted}
-      />
-
-      {/* Certificate Payment Modal */}
-      <CertificatePaymentModal
-        isOpen={showCertificatePaymentModal}
-        onClose={() => setShowCertificatePaymentModal(false)}
-        course={course}
-        onPaymentSubmitted={handleCertificatePaymentSubmitted}
-      />
     </div>
   )
 }
 
 export default CoursePlayer
-

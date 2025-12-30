@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useAuth } from '../contexts/AuthContext'
 import { isEnrolledInCourse, getUserProgress } from '../services/coursesService'
-import { getCoursePaymentSettings } from '../services/paymentService'
 import './CourseCard.css'
 
 function CourseCard({ course }) {
@@ -11,8 +10,6 @@ function CourseCard({ course }) {
   const [isEnrolled, setIsEnrolled] = useState(false)
   const [progress, setProgress] = useState(0)
   const [loading, setLoading] = useState(true)
-  const [paymentEnabled, setPaymentEnabled] = useState(false)
-  const [coursePrice, setCoursePrice] = useState(0)
 
   useEffect(() => {
     const checkEnrollment = async () => {
@@ -23,11 +20,6 @@ function CourseCard({ course }) {
       }
 
       try {
-        // Buscar configurações de pagamento
-        const { paymentEnabled: enabled, price } = await getCoursePaymentSettings(course.id)
-        setPaymentEnabled(enabled)
-        setCoursePrice(price)
-
         if (user) {
           const enrolled = await isEnrolledInCourse(user.uid, course.id)
           setIsEnrolled(enrolled)
@@ -87,11 +79,7 @@ function CourseCard({ course }) {
             )}
           </div>
           {!loading && !isEnrolled && course.type !== 'journey' && (
-            <span className={`course-price ${paymentEnabled && coursePrice > 0 ? 'paid' : 'free'}`}>
-              {paymentEnabled && coursePrice > 0
-                ? `${coursePrice.toLocaleString('pt-AO')} Kz`
-                : 'Grátis'}
-            </span>
+            <span className="course-price free">Grátis</span>
           )}
           {!loading && isEnrolled && (
             <div className="course-progress-container">

@@ -40,10 +40,7 @@ function JourneyView() {
         <FaArrowLeft />
         <span>Voltar ao Início</span>
       </Link>
-      <Link to="/" className="journey-logo">
-        <img src="/assets/logo.png" alt="BrioCursos" />
-        <span>BrioCursos</span>
-      </Link>
+    
     </div>
   )
 

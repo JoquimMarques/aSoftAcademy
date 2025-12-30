@@ -1,7 +1,7 @@
 .professores-page {
   min-height: 100vh;
   padding: 2rem 0;
-  background: #0d2818;
+  background: #0d0d1a;
 }
 
 .professores-page .container {
@@ -36,7 +36,7 @@
 
 .btn-add-professor {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -44,13 +44,13 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
 }
 
 .btn-add-professor:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(74, 222, 128, 0.4);
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
 }
 
 .error-message {
@@ -64,9 +64,9 @@
 }
 
 .success-message {
-  background: rgba(74, 222, 128, 0.1);
-  border: 1px solid rgba(74, 222, 128, 0.3);
-  color: #4ade80;
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: #a855f7;
   padding: 1rem;
   border-radius: 10px;
   margin-bottom: 1rem;
@@ -74,11 +74,11 @@
 }
 
 .add-professor-form-container {
-  background: linear-gradient(135deg, #0d2818 0%, #1a4d2e 100%);
+  background: linear-gradient(135deg, #0d0d1a 0%, #1a1a2e 100%);
   border-radius: 20px;
   padding: 2rem;
   margin-bottom: 2rem;
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  border: 1px solid rgba(168, 85, 247, 0.2);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -102,7 +102,7 @@
 }
 
 .add-professor-form label {
-  color: #4ade80;
+  color: #a855f7;
   font-weight: 600;
   font-size: 0.95rem;
 }
@@ -111,7 +111,7 @@
 .add-professor-form textarea {
   padding: 0.75rem;
   border-radius: 8px;
-  border: 2px solid rgba(74, 222, 128, 0.2);
+  border: 2px solid rgba(168, 85, 247, 0.2);
   background: rgba(0, 0, 0, 0.3);
   color: white;
   font-size: 1rem;
@@ -122,8 +122,8 @@
 .add-professor-form input:focus,
 .add-professor-form textarea:focus {
   outline: none;
-  border-color: #4ade80;
-  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
 }
 
 .add-professor-form input::placeholder,
@@ -154,14 +154,14 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
   color: white;
-  box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(74, 222, 128, 0.4);
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
 }
 
 .btn-primary:disabled {
@@ -188,11 +188,11 @@
 }
 
 .professor-card {
-  background: linear-gradient(135deg, #0d2818 0%, #1a4d2e 100%);
+  background: linear-gradient(135deg, #0d0d1a 0%, #1a1a2e 100%);
   border-radius: 20px;
   padding: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  border: 1px solid rgba(168, 85, 247, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   display: flex;
   flex-direction: column;
@@ -209,9 +209,9 @@
 }
 
 .btn-edit-professor {
-  background: rgba(74, 222, 128, 0.2);
-  border: 1px solid #4ade80;
-  color: #4ade80;
+  background: rgba(168, 85, 247, 0.2);
+  border: 1px solid #a855f7;
+  color: #a855f7;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -221,7 +221,7 @@
 }
 
 .btn-edit-professor:hover {
-  background: rgba(74, 222, 128, 0.3);
+  background: rgba(168, 85, 247, 0.3);
   transform: translateY(-2px);
 }
 
@@ -244,7 +244,7 @@
 .professor-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-  border-color: rgba(74, 222, 128, 0.4);
+  border-color: rgba(168, 85, 247, 0.4);
 }
 
 .professor-avatar {
@@ -257,7 +257,7 @@
   justify-content: center;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   overflow: hidden;
-  border: 3px solid rgba(74, 222, 128, 0.3);
+  border: 3px solid rgba(168, 85, 247, 0.3);
 }
 
 .professor-foto {
@@ -269,12 +269,12 @@
 .professor-foto-placeholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #1a4d2e 0%, #0d2818 100%);
+  background: linear-gradient(135deg, #1a1a2e 0%, #0d0d1a 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 4rem;
-  color: #4ade80;
+  color: #a855f7;
 }
 
 .professor-info {
@@ -300,7 +300,7 @@
 
 .professor-especialidade {
   font-size: 1rem;
-  color: #4ade80;
+  color: #a855f7;
   font-weight: 600;
   margin-bottom: 0.5rem;
   text-align: center;
@@ -335,7 +335,7 @@
   gap: 1rem;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(74, 222, 128, 0.2);
+  border-top: 1px solid rgba(168, 85, 247, 0.2);
   width: 100%;
   flex-wrap: wrap;
 }
@@ -355,15 +355,15 @@
 }
 
 .briolink-button {
-  background: rgba(74, 222, 128, 0.1);
-  border-color: #4ade80;
-  color: #4ade80;
+  background: rgba(168, 85, 247, 0.1);
+  border-color: #a855f7;
+  color: #a855f7;
 }
 
 .briolink-button:hover:not(.disabled) {
-  background: rgba(74, 222, 128, 0.2);
+  background: rgba(168, 85, 247, 0.2);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
 }
 
 .portfolio-button {
@@ -389,10 +389,10 @@
 .no-professores {
   text-align: center;
   padding: 3rem;
-  background: linear-gradient(135deg, #0d2818 0%, #1a4d2e 100%);
+  background: linear-gradient(135deg, #0d0d1a 0%, #1a1a2e 100%);
   border-radius: 20px;
   margin-top: 2rem;
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  border: 1px solid rgba(168, 85, 247, 0.2);
 }
 
 .no-professores p {

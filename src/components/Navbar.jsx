@@ -30,14 +30,14 @@ function Navbar() {
         <Link to="/" className="navbar-logo" onClick={closeMenu}>
           <img 
             src="/assets/logo.png" 
-            alt="BrioCursos Logo" 
+            alt="aSoftAcademy Logo" 
             className="logo-image"
             style={{ borderRadius: '100%' }}
             onError={(e) => {
               e.target.style.display = 'none'
             }}
           />
-          <span className="logo-text">BrioCursos</span>
+          <span className="logo-text"></span>
         </Link>
         
         <button 
@@ -59,20 +59,8 @@ function Navbar() {
           <li className="navbar-item">
             <Link to="/professores" className="navbar-link" onClick={closeMenu}>
               <FaChalkboardTeacher className="navbar-icon" />
-              <span>Professores</span>
+              <span>Formadores</span>
             </Link>
-          </li>
-          <li className="navbar-item">
-            <a 
-              href="https://briolinke.vercel.app/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="navbar-link"
-              onClick={closeMenu}
-            >
-              <FaLink className="navbar-icon" />
-              <span>Briolink</span>
-            </a>
           </li>
           {!isAdmin && (
             <li className="navbar-item">
