@@ -96,7 +96,7 @@ function CourseCard({ course }) {
                   />
                   <circle
                     className="progress-ring-circle"
-                    stroke="#4ade80"
+                    stroke="#a855f7"
                     strokeWidth="6"
                     fill="transparent"
                     r="24"

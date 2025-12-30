@@ -746,8 +746,8 @@ function CoursePlayer() {
               </p>
             )}
             {selectedVideo && selectedVideo.comment && (
-              <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(74, 222, 128, 0.2)' }}>
-                <h4 style={{ color: '#4ade80', marginBottom: '0.5rem', fontSize: '1rem' }}>📝 Sobre esta aula:</h4>
+              <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(168, 85, 247, 0.2)' }}>
+                <h4 style={{ color: '#a855f7', marginBottom: '0.5rem', fontSize: '1rem' }}>📝 Sobre esta aula:</h4>
                 <p style={{ color: 'rgba(255, 255, 255, 0.8)', lineHeight: '1.6', fontStyle: 'italic' }}>
                   {selectedVideo.comment}
                 </p>
@@ -785,7 +785,7 @@ function CoursePlayer() {
                       />
                       <circle
                         className="progress-ring-circle"
-                        stroke="#4ade80"
+                        stroke="#a855f7"
                         strokeWidth="8"
                         fill="transparent"
                         r="50"
@@ -840,7 +840,7 @@ function CoursePlayer() {
                       marginTop: '1rem',
                       padding: '0.75rem',
                       background: certificateRequestStatus === CERTIFICATE_REQUEST_STATUS.SENT
-                        ? 'rgba(74, 222, 128, 0.2)'
+                        ? 'rgba(168, 85, 247, 0.2)'
                         : certificateRequestStatus === CERTIFICATE_REQUEST_STATUS.APPROVED
                           ? 'rgba(59, 130, 246, 0.2)'
                           : certificateRequestStatus === CERTIFICATE_REQUEST_STATUS.REJECTED
@@ -849,7 +849,7 @@ function CoursePlayer() {
                       borderRadius: '8px',
                       fontSize: '0.9rem',
                       color: certificateRequestStatus === CERTIFICATE_REQUEST_STATUS.SENT
-                        ? '#4ade80'
+                        ? '#a855f7'
                         : certificateRequestStatus === CERTIFICATE_REQUEST_STATUS.APPROVED
                           ? '#3b82f6'
                           : certificateRequestStatus === CERTIFICATE_REQUEST_STATUS.REJECTED

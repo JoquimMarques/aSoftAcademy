@@ -112,24 +112,24 @@ function Certificados() {
             <div className="info-cards">
               <div className="info-card">
                 <h4>
-                  <FaCheckCircle style={{ marginRight: '0.5rem', color: '#4ade80' }} />
+                  <FaCheckCircle style={{ marginRight: '0.5rem', color: '#a855f7' }} />
                   Como obter
                 </h4>
                 <p>Complete 100% do curso e solicite o certificado. Após aprovação, você receberá por email.</p>
               </div>
               <div className="info-card">
                 <h4>
-                  <FaScroll style={{ marginRight: '0.5rem', color: '#4ade80' }} />
+                  <FaScroll style={{ marginRight: '0.5rem', color: '#a855f7' }} />
                   Validação
                 </h4>
                 <p>Certificados são verificáveis e incluem código único de autenticação.</p>
               </div>
               <div className="info-card">
                 <h4>
-                  <FaBriefcase style={{ marginRight: '0.5rem', color: '#4ade80' }} />
+                  <FaBriefcase style={{ marginRight: '0.5rem', color: '#a855f7' }} />
                   Profissional
                 </h4>
-                <p>Adicione seus certificados ao <a href='https://briolinke.vercel.app/' style={{ color: '#4ade80', textDecoration: 'none' }}>briolink</a> e portfólio profissional.</p>
+                <p>Adicione seus certificados ao <a href='https://briolinke.vercel.app/' style={{ color: '#a855f7', textDecoration: 'none' }}>briolink</a> e portfólio profissional.</p>
               </div>
             </div>
           </div>

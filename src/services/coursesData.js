@@ -438,7 +438,7 @@ export const journeys = [
     category: 'Programação',
     description: 'Aprenda programação do zero ao avançado com os melhores cursos',
     icon: '/img/programacao.jpeg',
-    color: '#4ade80',
+    color: '#a855f7',
     courses: ['portugol-studio', 'html', 'css', 'javascript', 'python']
   },
   {

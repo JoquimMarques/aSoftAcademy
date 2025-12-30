@@ -144,7 +144,7 @@ function AdminCertificates() {
     const badges = {
       [CERTIFICATE_REQUEST_STATUS.PENDING]: { text: 'Pendente', color: '#fbbf24', bg: 'rgba(251, 191, 36, 0.2)' },
       [CERTIFICATE_REQUEST_STATUS.APPROVED]: { text: 'Aprovado', color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.2)' },
-      [CERTIFICATE_REQUEST_STATUS.SENT]: { text: 'Enviado', color: '#4ade80', bg: 'rgba(74, 222, 128, 0.2)' },
+      [CERTIFICATE_REQUEST_STATUS.SENT]: { text: 'Enviado', color: '#a855f7', bg: 'rgba(168, 85, 247, 0.2)' },
       [CERTIFICATE_REQUEST_STATUS.REJECTED]: { text: 'Rejeitado', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.2)' }
     }
     return badges[status] || badges[CERTIFICATE_REQUEST_STATUS.PENDING]
@@ -316,7 +316,7 @@ function AdminCertificates() {
                             </button>
                           )}
                           {request.status === CERTIFICATE_REQUEST_STATUS.SENT && (
-                            <span style={{ color: '#4ade80', fontSize: '0.9rem' }}>
+                            <span style={{ color: '#a855f7', fontSize: '0.9rem' }}>
                               ✅ Enviado
                             </span>
                           )}
